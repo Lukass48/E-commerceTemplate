@@ -2,12 +2,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  OneToMany,
+  JoinColumn,
   // OneToMany,
   // JoinColumn,
 } from 'typeorm';
 // import { Orders } from 'src/entities/orders.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { Role } from 'src/modules/users/roles.enum';
+import { Orders } from './orders.entity';
 
 @Entity({
   name: 'USERS',
@@ -67,9 +70,14 @@ export class Users {
    */
   @Column({ type: 'varchar', length: 50 })
   city: string;
-
   /**
-   * Indica si el usuario es administrador o no
+   * Órdenes realizadas por el usuario
+   */
+  @OneToMany(() => Orders, (order) => order.user)
+  @JoinColumn({ name: 'order_id' })
+  orders: Orders[];
+  /**
+   * Indica si el rol del usuario
    */
   @Column({
     type: 'enum',
