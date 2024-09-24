@@ -21,4 +21,8 @@ export class UsersRepository {
   async getUserByEmail(email: string) {
     return await this.usersRepository.findOneBy({ email });
   }
+
+  async markEmailAsVerified(userId: number): Promise<void> {
+    await this.usersRepository.update(userId, { emailVerified: true });
+  }
 }

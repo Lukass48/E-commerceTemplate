@@ -85,4 +85,11 @@ export class Users {
     default: Role.Guest, // O el rol por defecto que prefieras
   })
   role: Role;
+
+  /**
+   * Indica si el correo electrónico del usuario ha sido verificado.
+   * @example 'true'
+   */
+  @Column({ type: 'boolean', default: false })
+  emailVerified: boolean;
 }

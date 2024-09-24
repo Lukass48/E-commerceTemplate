@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { OrdersRepository } from './order.repository';
 import { CreateOrderDto } from '../../Dtos/order.dto';
-import { Orders } from 'src/entities/orders.entity';
+import { Orders, OrderStatus } from 'src/entities/orders.entity';
 
 @Injectable()
 export class OrdersService {
@@ -11,7 +11,7 @@ export class OrdersService {
     return this.ordersRepository.addOrder(userId, products);
   }
 
-  getOrder(id: string) {
+  async getOrder(id: string): Promise<Orders> {
     return this.ordersRepository.getOrder(id);
   }
 
@@ -25,5 +25,18 @@ export class OrdersService {
 
   async deleteOrder(orderId: number): Promise<void> {
     await this.ordersRepository.deleteOrder(orderId);
+  }
+
+  async updateOrderStatus(orderId: string, status: OrderStatus): Promise<void> {
+    const order = await this.getOrder(orderId);
+    order.status = status;
+    await this.ordersRepository.save(order);
+  }
+
+  // Nuevo: Buscar orden por external_reference
+  async findOrderByExternalReference(
+    externalReference: string,
+  ): Promise<Orders> {
+    return this.ordersRepository.findByExternalReference(externalReference);
   }
 }

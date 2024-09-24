@@ -13,6 +13,9 @@ import { CategoriesModule } from './modules/categories/categories.module';
 import { ProductsService } from './modules/products/products.service';
 import { CategoriesService } from './modules/categories/categories.service';
 import { OrdersService } from './modules/orders/order.service';
+import { EmailService } from './modules/email/email.service';
+import { EmailModule } from './modules/email/email.module';
+import { MercadoPagoModule } from './modules/Mercado Pago/mercadoPago.module';
 
 @Module({
   imports: [
@@ -34,9 +37,17 @@ import { OrdersService } from './modules/orders/order.service';
     ProductsModule,
     OrderModule,
     CategoriesModule,
+    EmailModule,
+    MercadoPagoModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ProductsService, CategoriesService, OrdersService],
+  providers: [
+    AppService,
+    ProductsService,
+    CategoriesService,
+    OrdersService,
+    EmailService,
+  ],
 })
 export class AppModule implements OnModuleInit {
   constructor(

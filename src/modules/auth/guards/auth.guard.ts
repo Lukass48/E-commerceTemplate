@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
       const user = this.jwtService.verify(token, { secret });
       request.user = {
         ...user,
-        roles: user.role ? [user.role] : [Role.Guest],
+        roles: user.Role || [Role.Guest],
       };
       return true;
     } catch {

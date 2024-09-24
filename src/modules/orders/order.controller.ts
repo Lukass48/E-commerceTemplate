@@ -22,7 +22,7 @@ export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
   @Post('addOrder')
-  @Roles(Role.User, Role.Admin)
+  @Roles(Role.User)
   @UseGuards(AuthGuard, RolesGuard)
   addOrder(@Body() order: CreateOrderDto) {
     const { userId, products } = order;
@@ -30,7 +30,7 @@ export class OrdersController {
   }
 
   @Get(':id')
-  @Roles(Role.Admin)
+  @Roles(Role.User)
   @UseGuards(AuthGuard, RolesGuard)
   getOrder(@Param('id', ParseUUIDPipe) id: string) {
     return this.ordersService.getOrder(id);

@@ -10,6 +10,13 @@ import {
 import { Users } from './users.entity';
 import { OrderDetails } from './orderDetails.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { MercadoPago } from './mercadoPago.entity';
+
+export enum OrderStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CANCELLED = 'CANCELLED',
+}
 
 @Entity({
   name: 'ORDERS',
@@ -28,15 +35,26 @@ export class Orders {
   @Column()
   date: Date;
 
-  @Column('decimal', { precision: 10, scale: 2 })
+  @Column('decimal')
   total: number;
 
   @OneToMany(() => OrderDetails, (orderDetail) => orderDetail.order, {
-    cascade: true,
+    eager: true,
   })
   orderDetails: OrderDetails[];
+
+  @Column({ nullable: true })
+  externalReference: string;
 
   @ManyToOne(() => Users, (user) => user.orders)
   @JoinColumn({ name: 'user_id' })
   user: Users;
+
+  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.PENDING })
+  status: OrderStatus;
+
+  @OneToOne(() => MercadoPago, (mercadoPago) => mercadoPago.order, {
+    cascade: true,
+  })
+  payment: MercadoPago; // Agrega esta línea
 }
